@@ -126,6 +126,9 @@ function Library:Create(Class, Properties)
         _Instance = Instance.new(Class);
     end;
     for Property, Value in next, Properties do
+        if Property == 'Text' and type(Value) ~= 'string' then
+            Value = tostring(Value);
+        end;
         _Instance[Property] = Value;
     end;
     return _Instance;
@@ -863,11 +866,12 @@ do
             Parent = PickOuter,
         });
 
+        local defaultKeyText = (Info.Default == '' or Info.Default == 'None') and '---' or tostring(Info.Default);
         local DisplayLabel = Library:CreateLabel({
             Size = UDim2.new(0, 24, 1, 0);
             Font = Library.FontMedium;
             TextSize = 10;
-            Text = Info.Default == '' or Info.Default == 'None' and '---' or Info.Default;
+            Text = defaultKeyText;
             TextColor3 = Library.SecondaryFontColor;
             TextXAlignment = Enum.TextXAlignment.Center;
             ZIndex = 7;
